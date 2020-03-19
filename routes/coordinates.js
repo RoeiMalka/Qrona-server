@@ -7,8 +7,8 @@ const defaultRadius = 10; //If customer doesn't send a radius
 
 //Schema:
 var CoordinatesSchema = new mongoose.Schema({
-  latitude: {type:String},
-  longitude: {type:String}
+  lat: {type:String},
+  lng: {type:String}
 
 });
 
@@ -29,17 +29,15 @@ router.get('/', function(req, res, next) {
   var coords = Coordinate.find({} ,(err, coords) => {
     coords.forEach((item) => {
       //Check distance:
-      if (((parseFloat(currCoors.latitude)-parseFloat(item.latitude))**2+(parseFloat(currCoors.longitude)-parseFloat(item.longitude))**2)**0.5 < epsilon) {
-        res.send("NOT OK");
+      if (((parseFloat(currCoors.lat)-parseFloat(item.lat))**2+(parseFloat(currCoors.lng)-parseFloat(item.lng))**2)**0.5 < epsilon) {
+        res.send(true);
         isok=false;
+
         }
     });
-    if (isok) res.send("OK");
+    if (isok) res.send(false);
 
   });
-
-
-
 });
 
 
