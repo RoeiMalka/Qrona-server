@@ -1,1 +1,0 @@
-Covindex Server side
