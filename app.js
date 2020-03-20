@@ -3,9 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/Corona', {useNewUrlParser: true});
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var coordinatesRouter = require('./routes/coordinates');
+var googleApiRouter = require('./routes/google_api.js');
 
 var app = express();
 
@@ -21,11 +26,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/google_api', googleApiRouter);
+app.use('/coordinates', coordinatesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+//Checking Mongo connection:
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+   console.log("we're connected!")
+});
+
+
+
+
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -39,3 +57,5 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+app.listen(5000);
