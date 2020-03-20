@@ -1,5 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var cors = require('cors');
 var router = express.Router();
 
 var epsilon = 0.00001;    //0.00001 in coordinates = 1 meters
@@ -18,7 +19,7 @@ var allCoords = {}
 
 
 /* GET users listing. /lat=32.232&lon=32.33&radius=20*/
-router.get('/', function(req, res, next) {
+router.get('/',cors(),function(req, res, next) {
   var currCoors = req.query;
   var isok=true;
   console.log(currCoors);
@@ -42,7 +43,7 @@ router.get('/', function(req, res, next) {
 
 
 
-router.get('/polygons',async function(req, res) {
+router.get('/polygons',cors(),async function(req, res) {
   let areas = [];
   var keys = await Coordinate.find({}).distinct('key').exec();
   for (var i = 0; i < keys.length; i++) {
