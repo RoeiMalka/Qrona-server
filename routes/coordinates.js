@@ -56,5 +56,12 @@ router.get('/polygons',cors(),async function(req, res) {
   res.send(areas);
 });
 
+router.get('/allcords',cors(),async function(req, res) {
+  let arr = await Coordinate.find({'key':0}).select('-_id').select('-key').exec();
+  res.send(arr);
+
+
+});
+
 
 module.exports = router;
